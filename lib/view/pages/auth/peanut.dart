@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testproject/utils/size_config.dart';
-import 'package:testproject/view/pages/auth/peanut/bloc/peanut_auth_bloc.dart';
 
-import '../../../../constants/asset_paths.dart';
-import '../../../../routes.dart';
-import '../../../widgets/snackbar.dart';
-import '../../../widgets/unfocusable.dart';
+import '../../../constants/asset_paths.dart';
+import '../../../routes.dart';
+import '../../widgets/snackbar.dart';
+import '../../widgets/unfocusable.dart';
+import 'bloc/auth_bloc.dart';
 
-class PeanutAuthPage extends StatefulWidget {
-  const PeanutAuthPage({Key? key}) : super(key: key);
+class AuthPage extends StatefulWidget {
+  const AuthPage({Key? key}) : super(key: key);
 
   @override
-  State<PeanutAuthPage> createState() => _PeanutAuthPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
-class _PeanutAuthPageState extends State<PeanutAuthPage> {
+class _AuthPageState extends State<AuthPage> {
   final formKey = GlobalKey<FormState>();
 
   late int login;
@@ -147,8 +147,8 @@ class _PeanutAuthPageState extends State<PeanutAuthPage> {
     if (!formKey.currentState!.validate()) return;
     formKey.currentState!.save();
 
-    context.read<PeanutAuthBloc>().add(
-          PeanutSignInEvent(login, password, snackbar, goHome),
+    context.read<AuthBloc>().add(
+          SignInEvent(login, password, snackbar, goHome),
         );
   }
 

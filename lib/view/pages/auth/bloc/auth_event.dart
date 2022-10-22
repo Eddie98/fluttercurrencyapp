@@ -1,21 +1,21 @@
-part of 'peanut_auth_bloc.dart';
+part of 'auth_bloc.dart';
 
-abstract class PeanutAuthEvent extends Equatable {
-  const PeanutAuthEvent();
+abstract class AuthEvent extends Equatable {
+  const AuthEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class PeanutInitialRequestAuthEvent extends PeanutAuthEvent {}
+class InitialRequestAuthEvent extends AuthEvent {}
 
-class PeanutSignInEvent extends PeanutAuthEvent {
+class SignInEvent extends AuthEvent {
   final int login;
   final String password;
   final void Function(String) showSnackbar;
   final void Function() goHome;
 
-  const PeanutSignInEvent(
+  const SignInEvent(
     this.login,
     this.password,
     this.showSnackbar,

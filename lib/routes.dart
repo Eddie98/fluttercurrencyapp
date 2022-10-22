@@ -1,12 +1,11 @@
 import 'package:flutter/widgets.dart';
 
-import 'view/pages/auth/peanut/peanut.dart';
+import 'view/pages/auth/peanut.dart';
 import 'view/pages/home/home.dart';
 
 class Routes {
   static const String homeLink = '/';
-  static const String peanutAuthLink = '/peanut-auth';
-  static const String partnerAuthLink = '/partner-auth';
+  static const String authLink = '/auth';
 
   static Route<T> fadeThrough<T>(
     WidgetBuilder page, {
@@ -28,11 +27,8 @@ class Routes {
       if (settings.name == homeLink) {
         return const HomePage();
       }
-      if (settings.name == peanutAuthLink) {
-        return const PeanutAuthPage();
-      }
-      if (settings.name == partnerAuthLink) {
-        // return ResultsScreen(settings.arguments as List<List<String>>);
+      if (settings.name == authLink) {
+        return const AuthPage();
       }
       return const HomePage();
     }, settings: settings);

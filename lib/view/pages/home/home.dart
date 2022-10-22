@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../routes.dart';
 import '../../../utils/size_config.dart';
-import '../auth/peanut/bloc/peanut_auth_bloc.dart';
+import '../auth/bloc/auth_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -20,10 +20,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return BlocListener<PeanutAuthBloc, PeanutAuthInitialState>(
-      listenWhen: (_, state) => state.isShowAuthPage,
+    return BlocListener<AuthBloc, AuthInitialState>(
+      listenWhen: (_, state) =>
+          state.isShowPeanutAuthPage || state.isShowPartnerAuthPage,
       listener: (_, state) =>
-          Navigator.of(context).pushReplacementNamed(Routes.peanutAuthLink),
+          Navigator.of(context).pushReplacementNamed(Routes.authLink),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home'),

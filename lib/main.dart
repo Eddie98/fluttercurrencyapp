@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:testproject/data/repositories/peanut_repository.dart';
+import 'package:testproject/view/pages/auth/auth_repository.dart';
 import 'routes.dart';
-import 'view/pages/auth/peanut/bloc/peanut_auth_bloc.dart';
-import 'view/pages/profile/bloc/profile_info_bloc.dart';
-import 'view/pages/profile/profile_info_repository.dart';
+import 'view/pages/auth/bloc/auth_bloc.dart';
 import 'view/widgets/disable_glow.dart';
 
 void main() {
@@ -19,24 +17,16 @@ class MyApp extends StatelessWidget {
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(
-          create: (context) => ProfileInfoRepository(),
-        ),
-        RepositoryProvider(
-          create: (context) => PeanutRepository(),
+          create: (context) => AuthRepository(),
         ),
       ],
       child: Builder(builder: (context) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<ProfileInfoBloc>(
-              create: (_) => ProfileInfoBloc(
-                context.read<ProfileInfoRepository>(),
-              ),
-            ),
-            BlocProvider<PeanutAuthBloc>(
-              create: (_) => PeanutAuthBloc(
-                context.read<PeanutRepository>(),
-              )..add(PeanutInitialRequestAuthEvent()),
+            BlocProvider<AuthBloc>(
+              create: (_) => AuthBloc(
+                context.read<AuthRepository>(),
+              )..add(InitialRequestAuthEvent()),
             ),
           ],
           child: MaterialApp(

@@ -1,12 +1,17 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
-import '../../constants/constants.dart';
+import '../../../constants/constants.dart';
 
-class PeanutRepository {
+class AuthRepository {
   Dio dio = Dio();
 
   final peanutOptions = Options(
     contentType: 'application/json-patch+json',
+  );
+  final partnerOptions = Options(
+    headers: {'Content-Type': 'application/json'},
   );
 
   Future<Response> peanutAuth({
@@ -21,7 +26,7 @@ class PeanutRepository {
     );
   }
 
-  Future<Response> getAccountInformation({
+  Future<Response> peanutGetAuthAccountInformation({
     required int login,
     required String token,
   }) async {
@@ -31,5 +36,17 @@ class PeanutRepository {
       data: data,
       options: peanutOptions,
     );
+  }
+
+  Future<void> partnerAuth() async {
+    try {
+      Response response = await dio.post(
+        partnerAuthUrl,
+        data: authData.toMap(),
+        options: partnerOptions,
+      );
+
+      log(response.toString());
+    } catch (e) {}
   }
 }
