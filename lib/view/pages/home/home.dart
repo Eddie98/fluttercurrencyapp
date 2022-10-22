@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../constants/constants.dart';
 import '../../../routes.dart';
 import '../../../utils/size_config.dart';
 import '../auth/bloc/auth_bloc.dart';
@@ -15,6 +16,29 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedTabIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    asyncmethod();
+  }
+
+  void asyncmethod() async {
+    final bloc = context.read<AuthBloc>();
+    final prefs = await SharedPreferences.getInstance();
+
+    final peanutLogin = prefs.getInt(keyPeanutLogin);
+    final peanutToken = prefs.getString(keyPeanutToken);
+    final partnerLogin = prefs.getInt(keyPartnerLogin);
+    final partnerToken = prefs.getString(keyPartnerToken);
+
+    bloc.add(
+      IsShowAuthPageEvent(
+        isShowPeanutAuthPage: peanutLogin == null || peanutToken == null,
+        isShowPartnerAuthPage: partnerLogin == null || partnerToken == null,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,23 +70,14 @@ class _HomePageState extends State<HomePage> {
         body: Container(),
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTabIndex,
-          selectedItemColor: Colors.amber,
+          selectedItemColor: Colors.white,
           onTap: _changeTab,
+          backgroundColor: Colors.lightGreen,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
               backgroundColor: Colors.red,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.business),
-              label: 'Business',
-              backgroundColor: Colors.green,
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.school),
-              label: 'School',
-              backgroundColor: Colors.purple,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

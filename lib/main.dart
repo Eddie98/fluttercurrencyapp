@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
             BlocProvider<AuthBloc>(
               create: (_) => AuthBloc(
                 context.read<AuthRepository>(),
-              )..add(InitialRequestAuthEvent()),
+              ),
             ),
           ],
           child: MaterialApp(

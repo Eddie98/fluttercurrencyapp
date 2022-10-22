@@ -38,7 +38,7 @@ class AuthRepository {
   }) async =>
       await dio.post(
         partnerAuthUrl,
-        data: {'login': login, 'token': password},
+        data: {'login': login, 'password': password},
         options: partnerOptions,
       );
 }

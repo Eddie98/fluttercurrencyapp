@@ -7,7 +7,20 @@ abstract class AuthEvent extends Equatable {
   List<dynamic> get props => [];
 }
 
-class InitialRequestAuthEvent extends AuthEvent {}
+// class InitialRequestAuthEvent extends AuthEvent {}
+
+class IsShowAuthPageEvent extends AuthEvent {
+  final bool isShowPeanutAuthPage;
+  final bool isShowPartnerAuthPage;
+
+  const IsShowAuthPageEvent({
+    required this.isShowPeanutAuthPage,
+    required this.isShowPartnerAuthPage,
+  });
+
+  @override
+  List<dynamic> get props => [isShowPeanutAuthPage, isShowPartnerAuthPage];
+}
 
 class PeanutSignInEvent extends AuthEvent {
   final int login;
