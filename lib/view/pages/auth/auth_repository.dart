@@ -22,16 +22,6 @@ class AuthRepository {
         options: peanutOptions,
       );
 
-  Future<Response> peanutGetAuthAccountInformation({
-    required int login,
-    required String token,
-  }) async =>
-      await dio.post(
-        peanutGetAccountInfoUrl,
-        data: {'login': login, 'token': token},
-        options: peanutOptions,
-      );
-
   Future<Response> partnerAuth({
     required int login,
     required String password,

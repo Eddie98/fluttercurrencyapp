@@ -7,8 +7,6 @@ abstract class AuthEvent extends Equatable {
   List<dynamic> get props => [];
 }
 
-// class InitialRequestAuthEvent extends AuthEvent {}
-
 class IsShowAuthPageEvent extends AuthEvent {
   final bool isShowPeanutAuthPage;
   final bool isShowPartnerAuthPage;
