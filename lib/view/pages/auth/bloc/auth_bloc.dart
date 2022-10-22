@@ -20,7 +20,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
           isShowPartnerAuthPage: false,
         )) {
     on<InitialRequestAuthEvent>(initalRequestAuthEventHandler);
-    on<SignInEvent>(signInEventHandler);
+    on<PeanutSignInEvent>(peanutSignInEventHandler);
+    on<PartnerSignInEvent>(partnerSignInEventHandler);
   }
 
   void initalRequestAuthEventHandler(
@@ -29,23 +30,32 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
   ) async {
     final prefs = await SharedPreferences.getInstance();
 
-    final login = prefs.getInt(keyLogin);
-    final token = prefs.getString(keyToken);
+    // TODO one of auth pages or both, copyWith
+    final peanutLogin = prefs.getInt(keyPeanutLogin);
+    final peanutToken = prefs.getString(keyPeanutToken);
 
-    if (login == null || token == null) {
-      emit(const AuthInitialState(
-        isShowPeanutAuthPage: true,
-        isShowPartnerAuthPage: true,
-      ));
+    final partnerLogin = prefs.getInt(keyPeanutLogin);
+    final partnerToken = prefs.getString(keyPeanutToken);
+
+    if (peanutLogin == null ||
+        peanutToken == null ||
+        partnerLogin == null ||
+        partnerToken == null) {
+      if (peanutLogin == null || peanutToken == null) {
+        emit(state.copyWith(isShowPeanutAuthPage: true));
+      }
+      if (partnerLogin == null || partnerToken == null) {
+        emit(state.copyWith(isShowPeanutAuthPage: true));
+      }
       return;
     }
 
     try {
       Response response = await repository.peanutGetAuthAccountInformation(
-        login: login,
-        token: token,
+        login: peanutLogin,
+        token: peanutToken,
       );
-      if (response.data != null && response.data.isNotEmpty) {
+      if (response.data != null && (response.data as String).isNotEmpty) {
         emit(const AuthInitialState(
           isShowPeanutAuthPage: false,
           isShowPartnerAuthPage: false,
@@ -60,8 +70,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
     }
   }
 
-  void signInEventHandler(
-    SignInEvent event,
+  void peanutSignInEventHandler(
+    PeanutSignInEvent event,
     Emitter<AuthInitialState> emit,
   ) async {
     final prefs = await SharedPreferences.getInstance();
@@ -72,15 +82,39 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
         password: event.password,
       );
 
-      if (response.data['result']) {
-        prefs.setInt(keyLogin, event.login);
-        prefs.setString(keyToken, response.data['token']);
+      if (response.data != null && response.data['result']) {
+        prefs.setInt(keyPeanutLogin, event.login);
+        prefs.setString(keyPeanutToken, response.data['token']);
 
-        emit(const AuthInitialState(
-          isShowPeanutAuthPage: false,
-          isShowPartnerAuthPage: false,
-        ));
-        event.goHome();
+        emit(state.copyWith(isShowPeanutAuthPage: false));
+
+        if (event.goHome != null) event.goHome!();
+      }
+    } on DioError catch (e) {
+      log(e.toString());
+      event.showSnackbar(invalidLogPass);
+    }
+  }
+
+  void partnerSignInEventHandler(
+    PartnerSignInEvent event,
+    Emitter<AuthInitialState> emit,
+  ) async {
+    final prefs = await SharedPreferences.getInstance();
+
+    try {
+      Response response = await repository.partnerAuth(
+        login: event.login,
+        password: event.password,
+      );
+
+      if (response.data != null && response.data.isNotEmpty) {
+        prefs.setInt(keyPartnerLogin, event.login);
+        prefs.setString(keyPartnerToken, response.data);
+
+        emit(state.copyWith(isShowPartnerAuthPage: false));
+
+        if (event.goHome != null) event.goHome!();
       }
     } on DioError catch (e) {
       log(e.toString());

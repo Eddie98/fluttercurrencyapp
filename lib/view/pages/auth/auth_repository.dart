@@ -15,36 +15,30 @@ class AuthRepository {
   Future<Response> peanutAuth({
     required int login,
     required String password,
-  }) async {
-    final data = {'login': login, 'password': password};
-    return await dio.post(
-      peanutAuthUrl,
-      data: data,
-      options: peanutOptions,
-    );
-  }
+  }) async =>
+      await dio.post(
+        peanutAuthUrl,
+        data: {'login': login, 'password': password},
+        options: peanutOptions,
+      );
 
   Future<Response> peanutGetAuthAccountInformation({
     required int login,
     required String token,
-  }) async {
-    final data = {'login': login, 'token': token};
-    return await dio.post(
-      peanutGetAccountInfoUrl,
-      data: data,
-      options: peanutOptions,
-    );
-  }
+  }) async =>
+      await dio.post(
+        peanutGetAccountInfoUrl,
+        data: {'login': login, 'token': token},
+        options: peanutOptions,
+      );
 
   Future<Response> partnerAuth({
     required int login,
-    required String token,
-  }) async {
-    final data = {'login': login, 'token': token};
-    return await dio.post(
-      partnerAuthUrl,
-      data: data,
-      options: partnerOptions,
-    );
-  }
+    required String password,
+  }) async =>
+      await dio.post(
+        partnerAuthUrl,
+        data: {'login': login, 'token': password},
+        options: partnerOptions,
+      );
 }

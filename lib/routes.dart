@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'view/pages/auth/peanut.dart';
+import 'view/pages/auth/auth.dart';
 import 'view/pages/home/home.dart';
 
 class Routes {

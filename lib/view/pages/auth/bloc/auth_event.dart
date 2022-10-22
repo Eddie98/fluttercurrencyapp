@@ -4,24 +4,41 @@ abstract class AuthEvent extends Equatable {
   const AuthEvent();
 
   @override
-  List<Object> get props => [];
+  List<dynamic> get props => [];
 }
 
 class InitialRequestAuthEvent extends AuthEvent {}
 
-class SignInEvent extends AuthEvent {
+class PeanutSignInEvent extends AuthEvent {
   final int login;
   final String password;
   final void Function(String) showSnackbar;
-  final void Function() goHome;
+  final void Function()? goHome;
 
-  const SignInEvent(
+  const PeanutSignInEvent(
     this.login,
     this.password,
-    this.showSnackbar,
+    this.showSnackbar, [
     this.goHome,
-  );
+  ]);
 
   @override
-  List<Object> get props => [login, password, showSnackbar, goHome];
+  List<dynamic> get props => [login, password, showSnackbar, goHome];
+}
+
+class PartnerSignInEvent extends AuthEvent {
+  final int login;
+  final String password;
+  final void Function(String) showSnackbar;
+  final void Function()? goHome;
+
+  const PartnerSignInEvent(
+    this.login,
+    this.password,
+    this.showSnackbar, [
+    this.goHome,
+  ]);
+
+  @override
+  List<dynamic> get props => [login, password, showSnackbar, goHome];
 }

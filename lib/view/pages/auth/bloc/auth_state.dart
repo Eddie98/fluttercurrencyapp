@@ -16,6 +16,16 @@ class AuthInitialState extends AuthState {
     required this.isShowPartnerAuthPage,
   });
 
+  AuthInitialState copyWith({
+    bool? isShowPeanutAuthPage,
+    bool? isShowPartnerAuthPage,
+  }) =>
+      AuthInitialState(
+        isShowPeanutAuthPage: isShowPeanutAuthPage ?? this.isShowPeanutAuthPage,
+        isShowPartnerAuthPage:
+            isShowPartnerAuthPage ?? this.isShowPartnerAuthPage,
+      );
+
   @override
   List<Object> get props => [isShowPeanutAuthPage, isShowPartnerAuthPage];
 }
