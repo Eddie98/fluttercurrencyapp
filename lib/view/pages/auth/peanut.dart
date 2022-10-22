@@ -10,7 +10,14 @@ import '../../widgets/unfocusable.dart';
 import 'bloc/auth_bloc.dart';
 
 class AuthPage extends StatefulWidget {
-  const AuthPage({Key? key}) : super(key: key);
+  final bool isShowPeanutAuthPage;
+  final bool isShowPartnerAuthPage;
+
+  const AuthPage({
+    Key? key,
+    required this.isShowPeanutAuthPage,
+    required this.isShowPartnerAuthPage,
+  }) : super(key: key);
 
   @override
   State<AuthPage> createState() => _AuthPageState();

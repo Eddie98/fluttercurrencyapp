@@ -28,7 +28,11 @@ class Routes {
         return const HomePage();
       }
       if (settings.name == authLink) {
-        return const AuthPage();
+        final args = settings.arguments as Map<String, bool>;
+        return AuthPage(
+          isShowPeanutAuthPage: args['isShowPeanutAuthPage']!,
+          isShowPartnerAuthPage: args['isShowPartnerAuthPage']!,
+        );
       }
       return const HomePage();
     }, settings: settings);

@@ -23,8 +23,13 @@ class _HomePageState extends State<HomePage> {
     return BlocListener<AuthBloc, AuthInitialState>(
       listenWhen: (_, state) =>
           state.isShowPeanutAuthPage || state.isShowPartnerAuthPage,
-      listener: (_, state) =>
-          Navigator.of(context).pushReplacementNamed(Routes.authLink),
+      listener: (_, state) => Navigator.of(context).pushReplacementNamed(
+        Routes.authLink,
+        arguments: {
+          'isShowPeanutAuthPage': state.isShowPeanutAuthPage,
+          'isShowPartnerAuthPage': state.isShowPartnerAuthPage,
+        },
+      ),
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Home'),
