@@ -7,6 +7,7 @@ import 'package:testproject/ui/pages/home/tabs/home/widgets/periods_list.dart';
 import '../../../../../constants/colors.dart';
 import '../../../../../utils/size_config.dart';
 import 'bloc/home_bloc.dart';
+import 'widgets/list_item.dart';
 
 class HomeTab extends StatefulWidget {
   final void Function({
@@ -27,8 +28,9 @@ class HomeTab extends StatefulWidget {
 }
 
 class _HomeTabState extends State<HomeTab> {
+  final DateTime now = DateTime.now();
   final selectedCurrencies = <String>[];
-  String selectedPeriod = '';
+  late MapEntry<String, Duration> selectedPeriod;
 
   @override
   void initState() {
@@ -45,66 +47,86 @@ class _HomeTabState extends State<HomeTab> {
       return RefreshIndicator(
         color: Colors.white,
         backgroundColor: Colours.themeColor,
-        onRefresh: () async {
-          context.read<HomeBloc>().add(
-                HomeLoadInitialDataEvent(
-                  currencyPairs:
-                      testDefaultCurrencyPairs.map((e) => '$e, ').toString(),
-                  fromToMap: testDefaultFromToMap,
-                  goAuth: widget.goAuth,
-                  showSnackbar: widget.snackbar,
-                ),
-              );
-        },
+        onRefresh: () async => fetchData(),
         child: SingleChildScrollView(
           physics: const AlwaysScrollableScrollPhysics(),
           child: SizedBox(
             height: constraints.maxHeight,
-            child: BlocBuilder<HomeBloc, HomeState>(
-              builder: (context, state) {
-                if (state is HomeLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (state is HomeErrorState) {
-                  return const Center(child: Text(someWentWrong));
-                }
-                if (state is HomeLoadedState) {
-                  final signals = state.partnerAnalyticSignals;
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                sizedBoxHeight(22.0),
+                CurrenciesList(
+                  selectedCurrencies: selectedCurrencies,
+                  callback: (currency) {
+                    setState(() {
+                      if (selectedCurrencies.contains(currency)) {
+                        selectedCurrencies.remove(currency);
+                      } else {
+                        selectedCurrencies.add(currency);
+                      }
+                    });
+                    fetchData();
+                  },
+                ),
+                sizedBoxHeight(16.0),
+                PeriodsList(
+                  selectedPeriod: selectedPeriod,
+                  callback: (period) {
+                    setState(() {
+                      selectedPeriod = period;
+                    });
+                    fetchData();
+                  },
+                ),
+                sizedBoxHeight(22.0),
+                Expanded(
+                  child: BlocBuilder<HomeBloc, HomeState>(
+                    builder: (context, state) {
+                      if (state is HomeLoadingState) {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                      if (state is HomeErrorState) {
+                        return const Center(child: Text(someWentWrong));
+                      }
+                      if (state is HomeLoadedState) {
+                        final signals = state.partnerAnalyticSignals;
 
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      sizedBoxHeight(22.0),
-                      CurrenciesList(
-                        selectedCurrencies: selectedCurrencies,
-                        callback: (currency) {
-                          setState(() {
-                            if (selectedCurrencies.contains(currency)) {
-                              selectedCurrencies.remove(currency);
-                            } else {
-                              selectedCurrencies.add(currency);
-                            }
-                          });
-                        },
-                      ),
-                      sizedBoxHeight(22.0),
-                      PeriodsList(
-                        selectedPeriod: selectedPeriod,
-                        callback: (period) {
-                          setState(() {
-                            selectedPeriod = period;
-                          });
-                        },
-                      ),
-                    ],
-                  );
-                }
-                return const SizedBox.shrink();
-              },
+                        return SingleChildScrollView(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: List.generate(signals.length, (index) {
+                              return ListItem(signal: signals.elementAt(index));
+                            }),
+                          ),
+                        );
+                      }
+                      return const SizedBox.shrink();
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ),
       );
     });
+  }
+
+  void fetchData() {
+    context.read<HomeBloc>().add(
+          HomeLoadInitialDataEvent(
+            currencyPairs: selectedCurrencies.isNotEmpty
+                ? selectedCurrencies
+                    .reduce((value, element) => '$value,$element')
+                : '',
+            fromToMap: {
+              'from': now.subtract(selectedPeriod.value).second,
+              'to': now.second,
+            },
+            goAuth: widget.goAuth,
+            showSnackbar: widget.snackbar,
+          ),
+        );
   }
 }

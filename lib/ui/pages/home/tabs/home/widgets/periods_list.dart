@@ -3,8 +3,8 @@ import 'package:testproject/constants/constants.dart';
 import 'package:testproject/utils/size_config.dart';
 
 class PeriodsList extends StatelessWidget {
-  final String selectedPeriod;
-  final void Function(String) callback;
+  final MapEntry<String, Duration> selectedPeriod;
+  final void Function(MapEntry<String, Duration>) callback;
 
   const PeriodsList({
     super.key,
@@ -41,25 +41,25 @@ class PeriodsList extends StatelessWidget {
             shrinkWrap: true,
             physics: const ClampingScrollPhysics(),
             scrollDirection: Axis.horizontal,
-            itemCount: allPeriodsList.length,
+            itemCount: allPeriodsMap.length,
             padding: const EdgeInsets.symmetric(
               horizontal: defaultHorPadding,
             ),
             itemBuilder: (_, index) {
-              final period = allPeriodsList.elementAt(index);
+              final period = allPeriodsMap.entries.elementAt(index);
 
               return Container(
                 width: 100.0,
                 height: height,
                 margin: const EdgeInsets.symmetric(horizontal: 0.5),
                 decoration: BoxDecoration(
-                  color: selectedPeriod == period
+                  color: selectedPeriod.key == period.key
                       ? const Color(0xff2d0404)
                       : Colors.grey,
                   borderRadius: BorderRadius.horizontal(
                     left:
                         index == 0 ? const Radius.circular(10.0) : Radius.zero,
-                    right: index == allPeriodsList.length - 1
+                    right: index == allPeriodsMap.length - 1
                         ? const Radius.circular(10.0)
                         : Radius.zero,
                   ),
@@ -74,7 +74,7 @@ class PeriodsList extends StatelessWidget {
                   onTap: () => callback(period),
                   title: Center(
                     child: Text(
-                      period,
+                      period.key,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             fontWeight: FontWeight.bold,
                             color: Colors.white,

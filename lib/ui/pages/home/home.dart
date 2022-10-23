@@ -77,8 +77,8 @@ class _HomePageState extends State<HomePage> {
         } else {
           context.read<HomeBloc>().add(
                 HomeLoadInitialDataEvent(
-                  currencyPairs:
-                      testDefaultCurrencyPairs.map((e) => '$e, ').toString(),
+                  currencyPairs: testDefaultCurrencyPairs
+                      .reduce((value, element) => '$value,$element'),
                   fromToMap: testDefaultFromToMap,
                   goAuth: goAuth,
                   showSnackbar: snackbar,
