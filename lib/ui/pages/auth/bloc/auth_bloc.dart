@@ -53,6 +53,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
         emit(state.copyWith(isShowPeanutAuthPage: false));
 
         if (event.goHome != null) event.goHome!();
+        if (event.goNext != null) event.goNext!();
       }
     } on DioError catch (e) {
       log(e.toString());

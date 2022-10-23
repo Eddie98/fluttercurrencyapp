@@ -66,21 +66,26 @@ class CurrenciesList extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: ListTile(
-                  contentPadding: EdgeInsets.zero,
+                  contentPadding: EdgeInsets.symmetric(
+                    horizontal: getPropScreenWidth(6.0),
+                  ),
                   minLeadingWidth: 0.0,
                   horizontalTitleGap: 0.0,
                   minVerticalPadding: 0.0,
                   dense: true,
                   onTap: () => callback(currency),
                   title: Center(
-                    child: Text(
-                      currency,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            height: 0.8,
-                            fontSize: getAdaptiveFontSize(15.0),
-                          ),
+                    child: FittedBox(
+                      fit: BoxFit.scaleDown,
+                      child: Text(
+                        currency,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              height: 0.8,
+                              fontSize: getAdaptiveFontSize(15.0),
+                            ),
+                      ),
                     ),
                   ),
                 ),

@@ -106,6 +106,7 @@ class _AuthPageState extends State<AuthPage> {
           backgroundColor: Colors.transparent,
           body: PageView(
             controller: controller,
+            physics: const NeverScrollableScrollPhysics(),
             onPageChanged: (page) => setState(() => currentPage = page),
             children: pages,
           ),
@@ -127,14 +128,15 @@ class _AuthPageState extends State<AuthPage> {
 
     if (pages.length == 1) {
       if (widget.isShowPeanutAuthPage) {
-        bloc.add(PeanutSignInEvent(login, password, snackbar, goHome));
+        bloc.add(PeanutSignInEvent(login, password, snackbar, goHome: goHome));
       } else {
         bloc.add(PartnerSignInEvent(login, password, snackbar, goHome));
       }
     } else {
       if (currentPage == 0) {
-        bloc.add(PeanutSignInEvent(login, password, snackbar));
-        nextPage();
+        bloc.add(
+          PeanutSignInEvent(login, password, snackbar, goNext: nextPage),
+        );
       } else {
         bloc.add(PartnerSignInEvent(login, password, snackbar, goHome));
       }

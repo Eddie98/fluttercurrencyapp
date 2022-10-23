@@ -25,16 +25,18 @@ class PeanutSignInEvent extends AuthEvent {
   final String password;
   final void Function(String) showSnackbar;
   final void Function()? goHome;
+  final void Function()? goNext;
 
   const PeanutSignInEvent(
     this.login,
     this.password,
-    this.showSnackbar, [
+    this.showSnackbar, {
     this.goHome,
-  ]);
+    this.goNext,
+  });
 
   @override
-  List<dynamic> get props => [login, password, showSnackbar, goHome];
+  List<dynamic> get props => [login, password, showSnackbar, goHome, goNext];
 }
 
 class PartnerSignInEvent extends AuthEvent {

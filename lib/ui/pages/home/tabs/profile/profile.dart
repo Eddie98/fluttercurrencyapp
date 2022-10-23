@@ -36,20 +36,26 @@ class ProfileTab extends StatelessWidget {
                 ),
               );
         },
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: getPropScreenWidth(defaultHorPadding),
-          ),
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: SizedBox(
-            height: constraints.maxHeight,
+        child: SizedBox(
+          height: constraints.maxHeight,
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: getPropScreenWidth(defaultHorPadding),
+            ),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 if (state is ProfileLoadingState) {
-                  return const Center(child: CircularProgressIndicator());
+                  return SizedBox(
+                    height: constraints.maxHeight,
+                    child: const Center(child: CircularProgressIndicator()),
+                  );
                 }
                 if (state is ProfileErrorState) {
-                  return const Center(child: Text(someWentWrong));
+                  return SizedBox(
+                    height: constraints.maxHeight,
+                    child: const Center(child: Text(someWentWrong)),
+                  );
                 }
                 if (state is ProfileLoadedState) {
                   final info = state.peanutAccountInfo;

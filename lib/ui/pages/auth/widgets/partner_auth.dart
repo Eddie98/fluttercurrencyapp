@@ -41,7 +41,7 @@ class _PartnerAuthPageState extends State<PartnerAuthPage> {
               children: [
                 TextFormField(
                   // TODO:
-                  initialValue: '20234561',
+                  // initialValue: '20234561',
                   style: const TextStyle(color: Colors.black),
                   keyboardType: TextInputType.number,
                   inputFormatters: [
@@ -68,7 +68,7 @@ class _PartnerAuthPageState extends State<PartnerAuthPage> {
                 sizedBoxHeight(30.0),
                 TextFormField(
                   // TODO:
-                  initialValue: 'ladevi31',
+                  // initialValue: 'ladevi31',
                   style: const TextStyle(color: Colors.black),
                   obscureText: true,
                   decoration: InputDecoration(
