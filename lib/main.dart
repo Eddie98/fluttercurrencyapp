@@ -48,6 +48,9 @@ class MyApp extends StatelessWidget {
               bottomNavigationBarTheme: BottomNavigationBarThemeData(
                 backgroundColor: Colours.themeColor,
               ),
+              progressIndicatorTheme: ProgressIndicatorThemeData(
+                color: Colours.themeColor,
+              ),
             ),
             scrollBehavior: DisableGlowScrollBehavior(),
             initialRoute: Routes.homeLink,
