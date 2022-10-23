@@ -20,6 +20,7 @@ class RowBlock extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [leftWidget, rightWidget],
       ),
     );
