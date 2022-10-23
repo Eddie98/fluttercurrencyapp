@@ -43,7 +43,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
       emit(HomeLoadedState(list));
     } on DioError catch (e) {
-      if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
+      if (e.response != null &&
+          (e.response!.statusCode == 401 || e.response!.statusCode == 403)) {
         event.goAuth(isShowPartnerAuthPage: true);
       } else {
         event.showSnackbar(someWentWrong);

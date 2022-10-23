@@ -45,7 +45,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
       emit(ProfileLoadedState(accInfo, (phoneNumResponse.data as String)));
     } on DioError catch (e) {
-      if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
+      if (e.response != null &&
+          (e.response!.statusCode == 401 || e.response!.statusCode == 403)) {
         event.goAuth(isShowPeanutAuthPage: true);
       } else {
         event.showSnackbar(someWentWrong);

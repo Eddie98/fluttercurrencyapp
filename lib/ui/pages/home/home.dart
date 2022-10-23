@@ -106,18 +106,16 @@ class _HomePageState extends State<HomePage> {
                     ? 'Promotions'
                     : 'Profile',
           ),
-          // TODO: remove
           actions: [
             IconButton(
               onPressed: () {
                 SharedPreferences.getInstance().then((value) => value.clear());
                 Navigator.of(context).pushReplacementNamed(Routes.homeLink);
               },
-              icon: const Icon(Icons.delete),
+              icon: const Icon(Icons.logout),
             ),
           ],
         ),
-        // TODO: Pull to refresh
         body: PageView(
           controller: controller,
           physics: const NeverScrollableScrollPhysics(),
@@ -139,6 +137,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTabIndex,
           selectedItemColor: Colors.white,
+          unselectedItemColor: Colors.grey[500],
           onTap: changeTab,
           items: const [
             BottomNavigationBarItem(

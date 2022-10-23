@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// TODO: change color to one of auth page
 class Colours {
-  static Color themeColor = Colors.orange;
+  static Color themeColor = const Color.fromARGB(255, 73, 17, 17);
 }

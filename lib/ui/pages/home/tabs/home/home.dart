@@ -44,14 +44,14 @@ class _HomeTabState extends State<HomeTab> {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return RefreshIndicator(
-        color: Colors.white,
-        backgroundColor: Colours.themeColor,
-        onRefresh: () async => fetchData(),
-        child: SingleChildScrollView(
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: SizedBox(
-            height: constraints.maxHeight,
+      return SizedBox(
+        height: constraints.maxHeight,
+        child: RefreshIndicator(
+          color: Colors.white,
+          backgroundColor: Colours.themeColor,
+          onRefresh: () async => fetchData(),
+          child: SingleChildScrollView(
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -80,30 +80,35 @@ class _HomeTabState extends State<HomeTab> {
                   },
                 ),
                 sizedBoxHeight(22.0),
-                Expanded(
-                  child: BlocBuilder<HomeBloc, HomeState>(
-                    builder: (context, state) {
-                      if (state is HomeLoadingState) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-                      if (state is HomeErrorState) {
-                        return const Center(child: Text(someWentWrong));
-                      }
-                      if (state is HomeLoadedState) {
-                        final signals = state.partnerAnalyticSignals;
+                BlocBuilder<HomeBloc, HomeState>(
+                  builder: (context, state) {
+                    if (state is HomeLoadingState) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (state is HomeErrorState) {
+                      return const Center(child: Text(someWentWrong));
+                    }
+                    if (state is HomeLoadedState) {
+                      final signals = state.partnerAnalyticSignals;
 
-                        return SingleChildScrollView(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: List.generate(signals.length, (index) {
-                              return ListItem(signal: signals.elementAt(index));
-                            }),
-                          ),
-                        );
+                      if (signals.isEmpty) {
+                        return const Center(child: Text('No Data'));
                       }
-                      return const SizedBox.shrink();
-                    },
-                  ),
+
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: signals.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: defaultHorPadding,
+                        ),
+                        itemBuilder: (_, index) {
+                          return ListItem(signal: signals.elementAt(index));
+                        },
+                      );
+                    }
+                    return const SizedBox.shrink();
+                  },
                 ),
               ],
             ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testproject/ui/pages/auth/widgets/peanut_auth.dart';
 
 import '../../../constants/asset_paths.dart';
@@ -55,12 +54,6 @@ class _AuthPageState extends State<AuthPage> {
         ),
         child: Scaffold(
           backgroundColor: Colors.transparent,
-          // TODO: remove
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              SharedPreferences.getInstance().then((value) => value.clear());
-            },
-          ),
           body: PageView(
             controller: controller,
             onPageChanged: (page) => setState(() => currentPage = page),
