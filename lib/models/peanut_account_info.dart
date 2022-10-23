@@ -1,4 +1,4 @@
-import '../utils/check_dynamics.dart';
+import 'package:testproject/utils/check_dynamics.dart';
 
 class PeanutAccountInfo {
   PeanutAccountInfo({
@@ -24,21 +24,21 @@ class PeanutAccountInfo {
   });
 
   final String address;
-  final double balance;
+  final int balance;
   final String city;
   final String country;
   final int currency;
-  final double currentTradesCount;
-  final double currentTradesVolume;
-  final double equity;
-  final double freeMargin;
+  final int currentTradesCount;
+  final int currentTradesVolume;
+  final int equity;
+  final int freeMargin;
   final bool isAnyOpenTrades;
   final bool isSwapFree;
   final int leverage;
   final String name;
   final String phone;
   final int totalTradesCount;
-  final double totalTradesVolume;
+  final int totalTradesVolume;
   final int type;
   final int verificationLevel;
   final String zipCode;
@@ -46,22 +46,21 @@ class PeanutAccountInfo {
   factory PeanutAccountInfo.fromMap(Map<String, dynamic> json) =>
       PeanutAccountInfo(
         address: CheckDynamics.myString(json['address']),
-        balance: CheckDynamics.myDouble(json['balance']),
+        balance: CheckDynamics.myInt(json['balance']),
         city: CheckDynamics.myString(json['city']),
         country: CheckDynamics.myString(json['country']),
         currency: CheckDynamics.myInt(json['currency']),
-        currentTradesCount: CheckDynamics.myDouble(json['currentTradesCount']),
-        currentTradesVolume:
-            CheckDynamics.myDouble(json['currentTradesVolume']),
-        equity: CheckDynamics.myDouble(json['equity']),
-        freeMargin: CheckDynamics.myDouble(json['freeMargin']),
+        currentTradesCount: CheckDynamics.myInt(json['currentTradesCount']),
+        currentTradesVolume: CheckDynamics.myInt(json['currentTradesVolume']),
+        equity: CheckDynamics.myInt(json['equity']),
+        freeMargin: CheckDynamics.myInt(json['freeMargin']),
         isAnyOpenTrades: CheckDynamics.myBool(json['isAnyOpenTrades']),
         isSwapFree: CheckDynamics.myBool(json['isSwapFree']),
         leverage: CheckDynamics.myInt(json['leverage']),
         name: CheckDynamics.myString(json['name']),
         phone: CheckDynamics.myString(json['phone']),
         totalTradesCount: CheckDynamics.myInt(json['totalTradesCount']),
-        totalTradesVolume: CheckDynamics.myDouble(json['totalTradesVolume']),
+        totalTradesVolume: CheckDynamics.myInt(json['totalTradesVolume']),
         type: CheckDynamics.myInt(json['type']),
         verificationLevel: CheckDynamics.myInt(json['verificationLevel']),
         zipCode: CheckDynamics.myString(json['zipCode']),

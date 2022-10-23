@@ -19,5 +19,5 @@ class HomeLoadedState extends HomeState {
   const HomeLoadedState(this.partnerAnalyticSignals);
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [partnerAnalyticSignals];
 }

@@ -41,8 +41,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .map((json) => PartnerAnalyticSignal.fromMap(json))
           .toList();
 
-      log(list.toString());
-
       emit(HomeLoadedState(list));
     } on DioError catch (e) {
       if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {

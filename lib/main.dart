@@ -6,6 +6,7 @@ import 'routes.dart';
 import 'ui/pages/auth/bloc/auth_bloc.dart';
 import 'ui/pages/home/home_repository.dart';
 import 'ui/pages/home/tabs/home/bloc/home_bloc.dart';
+import 'ui/pages/home/tabs/profile/bloc/profile_bloc.dart';
 import 'ui/widgets/disable_glow.dart';
 
 void main() {
@@ -34,6 +35,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<HomeBloc>(
               create: (_) => HomeBloc(context.read<HomeRepository>()),
+            ),
+            BlocProvider<ProfileBloc>(
+              create: (_) => ProfileBloc(context.read<HomeRepository>()),
             ),
           ],
           child: MaterialApp(

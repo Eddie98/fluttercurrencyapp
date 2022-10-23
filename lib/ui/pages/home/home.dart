@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testproject/ui/pages/home/tabs/home/home.dart';
+import 'package:testproject/ui/pages/home/tabs/profile/bloc/profile_bloc.dart';
 import 'package:testproject/ui/pages/home/tabs/profile/profile.dart';
 
 import '../../../constants/constants.dart';
@@ -72,11 +73,17 @@ class _HomePageState extends State<HomePage> {
             },
           );
         } else {
-          // TODO: other requests
           context.read<HomeBloc>().add(
                 HomeLoadInitialDataEvent(
                   currencyPairs: testDefaultCurrencyPairs,
                   fromToMap: testDefaultFromToMap,
+                  goAuth: goAuth,
+                  showSnackbar: snackbar,
+                ),
+              );
+
+          context.read<ProfileBloc>().add(
+                ProfileLoadInitialDataEvent(
                   goAuth: goAuth,
                   showSnackbar: snackbar,
                 ),
