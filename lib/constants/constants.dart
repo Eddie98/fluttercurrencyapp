@@ -6,6 +6,8 @@ const keyPartnerToken = '_key_partner_token';
 const invalidLogPass = 'Invalid login or password';
 const someWentWrong = 'Something went wrong';
 
+const defaultHorPadding = 16.0;
+
 const testAuthData = {'login': 20234561, 'password': 'ladevi31'};
 
 const testDefaultCurrencyPairs = 'EURUSD';

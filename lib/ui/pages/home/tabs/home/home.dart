@@ -5,7 +5,18 @@ import 'package:testproject/constants/constants.dart';
 import 'bloc/home_bloc.dart';
 
 class HomeTab extends StatelessWidget {
-  const HomeTab({super.key});
+  final void Function({
+    bool? isShowPeanutAuthPage,
+    bool? isShowPartnerAuthPage,
+  }) goAuth;
+
+  final void Function(String text) snackbar;
+
+  const HomeTab({
+    super.key,
+    required this.goAuth,
+    required this.snackbar,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +34,7 @@ class HomeTab extends StatelessWidget {
           return Center(
               child: Text(state.partnerAnalyticSignals.last.pair.toString()));
         }
-        return Container();
+        return const SizedBox.shrink();
       },
     );
   }

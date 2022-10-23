@@ -108,9 +108,15 @@ class _HomePageState extends State<HomePage> {
         body: PageView(
           controller: controller,
           physics: const NeverScrollableScrollPhysics(),
-          children: const [
-            HomeTab(),
-            ProfileTab(),
+          children: [
+            HomeTab(
+              goAuth: goAuth,
+              snackbar: snackbar,
+            ),
+            ProfileTab(
+              goAuth: goAuth,
+              snackbar: snackbar,
+            ),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

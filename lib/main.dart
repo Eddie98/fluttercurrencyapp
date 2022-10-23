@@ -55,6 +55,9 @@ class MyApp extends StatelessWidget {
               progressIndicatorTheme: ProgressIndicatorThemeData(
                 color: Colours.themeColor,
               ),
+              textTheme: const TextTheme(
+                bodyMedium: TextStyle(fontSize: 18.0),
+              ),
             ),
             scrollBehavior: DisableGlowScrollBehavior(),
             initialRoute: Routes.homeLink,

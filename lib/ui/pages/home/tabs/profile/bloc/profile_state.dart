@@ -18,7 +18,9 @@ class ProfileLoadedState extends ProfileState {
   final String peanutLastFourNumbersPhone;
 
   const ProfileLoadedState(
-      this.peanutAccountInfo, this.peanutLastFourNumbersPhone);
+    this.peanutAccountInfo,
+    this.peanutLastFourNumbersPhone,
+  );
 
   @override
   List<Object> get props => [peanutAccountInfo, peanutLastFourNumbersPhone];
