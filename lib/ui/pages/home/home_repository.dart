@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:http/http.dart' as http;
 
 import '../../../constants/constants.dart';
 
@@ -47,5 +48,14 @@ class HomeRepository {
           contentType: 'application/json',
           headers: {'passkey': token},
         ),
+      );
+
+  Future<http.Response> promotionsGetCabinetMicroService() async =>
+      await http.get(
+        // Uri.parse('http://tempuri.org/CabinetMicroService/GetCCPromo'),
+        Uri.parse(promotionsBaseUrl),
+        headers: {
+          'Content-Type': 'text/xml',
+        },
       );
 }

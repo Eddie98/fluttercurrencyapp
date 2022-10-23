@@ -24,3 +24,6 @@ const String partnerAuthUrl =
     '$partnerBaseUrl/api/Authentication/RequestMoblieCabinetApiToken';
 const String partnerGetAnalyticSignalsUrl =
     '$partnerBaseUrl/clientmobile/GetAnalyticSignals';
+
+const String promotionsBaseUrl =
+    'https://api-forexcopy.contentdatapro.com/Services/CabinetMicroService.svc?wsdl';

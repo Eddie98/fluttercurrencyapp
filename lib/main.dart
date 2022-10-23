@@ -7,6 +7,7 @@ import 'ui/pages/auth/bloc/auth_bloc.dart';
 import 'ui/pages/home/home_repository.dart';
 import 'ui/pages/home/tabs/home/bloc/home_bloc.dart';
 import 'ui/pages/home/tabs/profile/bloc/profile_bloc.dart';
+import 'ui/pages/home/tabs/promotions/bloc/promotions_bloc.dart';
 import 'ui/widgets/disable_glow.dart';
 
 void main() {
@@ -38,6 +39,9 @@ class MyApp extends StatelessWidget {
             ),
             BlocProvider<ProfileBloc>(
               create: (_) => ProfileBloc(context.read<HomeRepository>()),
+            ),
+            BlocProvider<PromotionsBloc>(
+              create: (_) => PromotionsBloc(context.read<HomeRepository>()),
             ),
           ],
           child: MaterialApp(

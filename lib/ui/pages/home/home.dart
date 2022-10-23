@@ -4,6 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testproject/ui/pages/home/tabs/home/home.dart';
 import 'package:testproject/ui/pages/home/tabs/profile/bloc/profile_bloc.dart';
 import 'package:testproject/ui/pages/home/tabs/profile/profile.dart';
+import 'package:testproject/ui/pages/home/tabs/promotions/bloc/promotions_bloc.dart';
+import 'package:testproject/ui/pages/home/tabs/promotions/promotions.dart';
 
 import '../../../constants/constants.dart';
 import '../../../routes.dart';
@@ -88,11 +90,21 @@ class _HomePageState extends State<HomePage> {
                   showSnackbar: snackbar,
                 ),
               );
+
+          context
+              .read<PromotionsBloc>()
+              .add(PromotionsLoadInitialDataEvent(showSnackbar: snackbar));
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text(_selectedTabIndex == 0 ? 'Home' : 'Profile'),
+          title: Text(
+            _selectedTabIndex == 0
+                ? 'Home'
+                : _selectedTabIndex == 1
+                    ? 'Promotions'
+                    : 'Profile',
+          ),
           // TODO: remove
           actions: [
             IconButton(
@@ -113,6 +125,10 @@ class _HomePageState extends State<HomePage> {
               goAuth: goAuth,
               snackbar: snackbar,
             ),
+            PromotionsTab(
+              goAuth: goAuth,
+              snackbar: snackbar,
+            ),
             ProfileTab(
               goAuth: goAuth,
               snackbar: snackbar,
@@ -127,6 +143,10 @@ class _HomePageState extends State<HomePage> {
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
               label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.percent),
+              label: 'Promotions',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
