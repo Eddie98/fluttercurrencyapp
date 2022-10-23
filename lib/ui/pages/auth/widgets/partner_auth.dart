@@ -99,7 +99,7 @@ class _PartnerAuthPageState extends State<PartnerAuthPage> {
                       ),
                     ),
                     CircleAvatar(
-                      radius: getPropScreenWidth(26.0),
+                      radius: 30.0,
                       backgroundColor: const Color(0xff4c505b),
                       child: IconButton(
                         color: Colors.white,

@@ -15,12 +15,12 @@ class TitleWidget extends StatelessWidget {
       padding: EdgeInsets.only(
         left: getPropScreenWidth(35.0),
         right: getPropScreenWidth(35.0),
-        top: size.height * 0.2,
+        top: size.height * 0.15,
       ),
       child: Text(
         text,
         style: TextStyle(
-          color: Colors.white,
+          color: Colors.grey[300],
           fontWeight: FontWeight.bold,
           fontSize: getAdaptiveFontSize(35.0),
         ),
