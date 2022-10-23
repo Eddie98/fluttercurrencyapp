@@ -21,7 +21,7 @@ class PromotionsBloc extends Bloc<PromotionsEvent, PromotionsState> {
     PromotionsLoadInitialDataEvent event,
     Emitter<PromotionsState> emit,
   ) async {
-    emit(PromotionsLoadingState());
+    // emit(PromotionsLoadingState());
 
     try {
       // http.Response response =
