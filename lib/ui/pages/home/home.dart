@@ -1,4 +1,9 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testproject/ui/pages/home/tabs/home/home.dart';
@@ -22,14 +27,28 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final Connectivity connectivity = Connectivity();
+
+  late StreamSubscription<ConnectivityResult> connectivitySubscription;
   late final PageController controller;
+
   int _selectedTabIndex = 0;
 
   @override
   void initState() {
     super.initState();
     controller = PageController();
+
+    initConnectivity();
+    connectivitySubscription =
+        connectivity.onConnectivityChanged.listen(updateConnectionStatus);
     asyncmethod();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    connectivitySubscription.cancel();
   }
 
   void asyncmethod() async {
@@ -170,4 +189,26 @@ class _HomePageState extends State<HomePage> {
           'isShowPartnerAuthPage': isShowPartnerAuthPage ?? false,
         },
       );
+
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+
+    try {
+      result = await connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      log('Couldn\'t check connectivity status', error: e);
+      return;
+    }
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return updateConnectionStatus(result);
+  }
+
+  Future<void> updateConnectionStatus(ConnectivityResult result) async {
+    if (result == ConnectivityResult.none) {
+      snackbar(noInternet);
+    }
+  }
 }

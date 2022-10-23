@@ -5,6 +5,7 @@ const keyPartnerToken = '_key_partner_token';
 
 const invalidLogPass = 'Invalid login or password';
 const someWentWrong = 'Something went wrong';
+const noInternet = 'No internet connection';
 
 const defaultHorPadding = 16.0;
 

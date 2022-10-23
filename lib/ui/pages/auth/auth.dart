@@ -1,8 +1,14 @@
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testproject/ui/pages/auth/widgets/peanut_auth.dart';
 
 import '../../../constants/asset_paths.dart';
+import '../../../constants/constants.dart';
 import '../../../routes.dart';
 import '../../widgets/snackbar.dart';
 import '../../widgets/unfocusable.dart';
@@ -24,6 +30,9 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final Connectivity connectivity = Connectivity();
+
+  late StreamSubscription<ConnectivityResult> connectivitySubscription;
   late final PageController controller;
   final pages = <Widget>[];
 
@@ -34,12 +43,22 @@ class _AuthPageState extends State<AuthPage> {
     super.initState();
     controller = PageController();
 
+    initConnectivity();
+    connectivitySubscription =
+        connectivity.onConnectivityChanged.listen(updateConnectionStatus);
+
     if (widget.isShowPeanutAuthPage) {
       pages.add(PeanutAuthPage(onSubmit: onSumbit));
     }
     if (widget.isShowPartnerAuthPage) {
       pages.add(PartnerAuthPage(onSubmit: onSumbit));
     }
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    connectivitySubscription.cancel();
   }
 
   @override
@@ -93,4 +112,26 @@ class _AuthPageState extends State<AuthPage> {
 
   void snackbar(String text) => showSnackBar(context, text);
   void goHome() => Navigator.of(context).pushReplacementNamed(Routes.homeLink);
+
+  Future<void> initConnectivity() async {
+    late ConnectivityResult result;
+
+    try {
+      result = await connectivity.checkConnectivity();
+    } on PlatformException catch (e) {
+      log('Couldn\'t check connectivity status', error: e);
+      return;
+    }
+    if (!mounted) {
+      return Future.value(null);
+    }
+
+    return updateConnectionStatus(result);
+  }
+
+  Future<void> updateConnectionStatus(ConnectivityResult result) async {
+    if (result == ConnectivityResult.none) {
+      snackbar(noInternet);
+    }
+  }
 }
