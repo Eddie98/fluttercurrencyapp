@@ -4,7 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:testproject/view/pages/auth/auth_repository.dart';
+import 'package:testproject/ui/pages/auth/auth_repository.dart';
 
 import '../../../../../constants/constants.dart';
 

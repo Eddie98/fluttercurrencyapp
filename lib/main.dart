@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:testproject/constants/colors.dart';
-import 'package:testproject/view/pages/auth/auth_repository.dart';
+import 'package:testproject/ui/pages/auth/auth_repository.dart';
 import 'routes.dart';
-import 'view/pages/auth/bloc/auth_bloc.dart';
-import 'view/pages/home/home_repository.dart';
-import 'view/pages/home/tabs/home/bloc/home_bloc.dart';
-import 'view/widgets/disable_glow.dart';
+import 'ui/pages/auth/bloc/auth_bloc.dart';
+import 'ui/pages/home/home_repository.dart';
+import 'ui/pages/home/tabs/home/bloc/home_bloc.dart';
+import 'ui/widgets/disable_glow.dart';
 
 void main() {
   runApp(const MyApp());

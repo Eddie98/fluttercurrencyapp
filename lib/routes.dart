@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-import 'view/pages/auth/auth.dart';
-import 'view/pages/home/home.dart';
+import 'ui/pages/auth/auth.dart';
+import 'ui/pages/home/home.dart';
 
 class Routes {
   static const String homeLink = '/';
