@@ -7,6 +7,7 @@ import 'package:testproject/view/pages/home/tabs/profile/profile.dart';
 import '../../../constants/constants.dart';
 import '../../../routes.dart';
 import '../../../utils/size_config.dart';
+import '../../widgets/snackbar.dart';
 import '../auth/bloc/auth_bloc.dart';
 import 'tabs/home/bloc/home_bloc.dart';
 
@@ -45,6 +46,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void changeTab(int index) {
+    setState(() {
+      _selectedTabIndex = index;
+    });
+    controller.animateToPage(
+      index,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeInOut,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -62,9 +74,11 @@ class _HomePageState extends State<HomePage> {
         } else {
           // TODO: other requests
           context.read<HomeBloc>().add(
-                const HomeLoadInitialDataEvent(
+                HomeLoadInitialDataEvent(
                   currencyPairs: testDefaultCurrencyPairs,
                   fromToMap: testDefaultFromToMap,
+                  goAuth: goAuth,
+                  showSnackbar: snackbar,
                 ),
               );
         }
@@ -95,7 +109,7 @@ class _HomePageState extends State<HomePage> {
         bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedTabIndex,
           selectedItemColor: Colors.white,
-          onTap: _changeTab,
+          onTap: changeTab,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),
@@ -111,14 +125,16 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _changeTab(int index) {
-    setState(() {
-      _selectedTabIndex = index;
-    });
-    controller.animateToPage(
-      index,
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeInOut,
-    );
-  }
+  void snackbar(String text) => showSnackBar(context, text);
+  void goAuth({
+    bool? isShowPeanutAuthPage,
+    bool? isShowPartnerAuthPage,
+  }) =>
+      Navigator.of(context).pushReplacementNamed(
+        Routes.authLink,
+        arguments: {
+          'isShowPeanutAuthPage': isShowPeanutAuthPage ?? false,
+          'isShowPartnerAuthPage': isShowPartnerAuthPage ?? false,
+        },
+      );
 }

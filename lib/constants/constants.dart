@@ -4,6 +4,7 @@ const keyPartnerLogin = '_key_partner_login';
 const keyPartnerToken = '_key_partner_token';
 
 const invalidLogPass = 'Invalid login or password';
+const someWentWrong = 'Something went wrong';
 
 const testAuthData = {'login': 20234561, 'password': 'ladevi31'};
 

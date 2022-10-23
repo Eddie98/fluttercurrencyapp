@@ -35,7 +35,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       );
       log(response.data.toString());
     } on DioError catch (e) {
-      // TODO: 401 status && other snackbar something wrong
+      if (e.response!.statusCode == 401 || e.response!.statusCode == 403) {
+        event.goAuth(isShowPartnerAuthPage: true);
+      } else {
+        event.showSnackbar(someWentWrong);
+      }
+
       log(e.toString());
     }
   }
