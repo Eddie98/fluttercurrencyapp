@@ -16,8 +16,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthInitialState> {
 
   AuthBloc(this.repository)
       : super(const AuthInitialState(
-          isShowPeanutAuthPage: false,
-          isShowPartnerAuthPage: false,
+          isShowPeanutAuthPage: true,
+          isShowPartnerAuthPage: true,
         )) {
     on<IsShowAuthPageEvent>(isShowAuthPageEventHandler);
     on<PeanutSignInEvent>(peanutSignInEventHandler);

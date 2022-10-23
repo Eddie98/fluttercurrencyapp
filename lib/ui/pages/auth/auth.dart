@@ -5,7 +5,9 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:testproject/ui/pages/auth/widgets/peanut_auth.dart';
+import 'package:testproject/utils/size_config.dart';
 
 import '../../../constants/asset_paths.dart';
 import '../../../constants/constants.dart';
@@ -43,6 +45,8 @@ class _AuthPageState extends State<AuthPage> {
     super.initState();
     controller = PageController();
 
+    asyncmethod();
+
     initConnectivity();
     connectivitySubscription =
         connectivity.onConnectivityChanged.listen(updateConnectionStatus);
@@ -55,6 +59,31 @@ class _AuthPageState extends State<AuthPage> {
     }
   }
 
+  void asyncmethod() async {
+    final navigator = Navigator.of(context);
+    final bloc = context.read<AuthBloc>();
+    final prefs = await SharedPreferences.getInstance();
+
+    final peanutLogin = prefs.getInt(keyPeanutLogin);
+    final peanutToken = prefs.getString(keyPeanutToken);
+    final partnerLogin = prefs.getInt(keyPartnerLogin);
+    final partnerToken = prefs.getString(keyPartnerToken);
+
+    bloc.add(
+      IsShowAuthPageEvent(
+        isShowPeanutAuthPage: peanutLogin == null || peanutToken == null,
+        isShowPartnerAuthPage: partnerLogin == null || partnerToken == null,
+      ),
+    );
+
+    if (peanutLogin != null &&
+        peanutToken != null &&
+        partnerLogin != null &&
+        partnerToken != null) {
+      navigator.pushReplacementNamed(Routes.homeLink);
+    }
+  }
+
   @override
   dispose() {
     super.dispose();
@@ -63,6 +92,8 @@ class _AuthPageState extends State<AuthPage> {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
+
     return UnFocusable(
       child: Container(
         decoration: const BoxDecoration(

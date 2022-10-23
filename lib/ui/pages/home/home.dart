@@ -16,7 +16,6 @@ import '../../../constants/constants.dart';
 import '../../../routes.dart';
 import '../../../utils/size_config.dart';
 import '../../widgets/snackbar.dart';
-import '../auth/bloc/auth_bloc.dart';
 import 'tabs/home/bloc/home_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -42,30 +41,33 @@ class _HomePageState extends State<HomePage> {
     initConnectivity();
     connectivitySubscription =
         connectivity.onConnectivityChanged.listen(updateConnectionStatus);
-    asyncmethod();
+
+    context.read<HomeBloc>().add(
+          HomeLoadInitialDataEvent(
+            currencyPairs: testDefaultCurrencyPairs
+                .reduce((value, element) => '$value,$element'),
+            fromToMap: testDefaultFromToMap,
+            goAuth: goAuth,
+            showSnackbar: snackbar,
+          ),
+        );
+
+    context.read<ProfileBloc>().add(
+          ProfileLoadInitialDataEvent(
+            goAuth: goAuth,
+            showSnackbar: snackbar,
+          ),
+        );
+
+    context
+        .read<PromotionsBloc>()
+        .add(PromotionsLoadInitialDataEvent(showSnackbar: snackbar));
   }
 
   @override
   dispose() {
     super.dispose();
     connectivitySubscription.cancel();
-  }
-
-  void asyncmethod() async {
-    final bloc = context.read<AuthBloc>();
-    final prefs = await SharedPreferences.getInstance();
-
-    final peanutLogin = prefs.getInt(keyPeanutLogin);
-    final peanutToken = prefs.getString(keyPeanutToken);
-    final partnerLogin = prefs.getInt(keyPartnerLogin);
-    final partnerToken = prefs.getString(keyPartnerToken);
-
-    bloc.add(
-      IsShowAuthPageEvent(
-        isShowPeanutAuthPage: peanutLogin == null || peanutToken == null,
-        isShowPartnerAuthPage: partnerLogin == null || partnerToken == null,
-      ),
-    );
   }
 
   void changeTab(int index) {
@@ -83,96 +85,69 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     SizeConfig().init(context);
 
-    return BlocListener<AuthBloc, AuthInitialState>(
-      listener: (_, state) {
-        if (state.isShowPeanutAuthPage || state.isShowPartnerAuthPage) {
-          Navigator.of(context).pushReplacementNamed(
-            Routes.authLink,
-            arguments: {
-              'isShowPeanutAuthPage': state.isShowPeanutAuthPage,
-              'isShowPartnerAuthPage': state.isShowPartnerAuthPage,
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        title: Text(
+          _selectedTabIndex == 0
+              ? 'Home'
+              : _selectedTabIndex == 1
+                  ? 'Promotions'
+                  : 'Profile',
+        ),
+        actions: [
+          IconButton(
+            onPressed: () {
+              SharedPreferences.getInstance().then((value) => value.clear());
+              Navigator.of(context).pushReplacementNamed(
+                Routes.authLink,
+                arguments: {
+                  'isShowPeanutAuthPage': true,
+                  'isShowPartnerAuthPage': true,
+                },
+              );
             },
-          );
-        } else {
-          context.read<HomeBloc>().add(
-                HomeLoadInitialDataEvent(
-                  currencyPairs: testDefaultCurrencyPairs
-                      .reduce((value, element) => '$value,$element'),
-                  fromToMap: testDefaultFromToMap,
-                  goAuth: goAuth,
-                  showSnackbar: snackbar,
-                ),
-              );
-
-          context.read<ProfileBloc>().add(
-                ProfileLoadInitialDataEvent(
-                  goAuth: goAuth,
-                  showSnackbar: snackbar,
-                ),
-              );
-
-          context
-              .read<PromotionsBloc>()
-              .add(PromotionsLoadInitialDataEvent(showSnackbar: snackbar));
-        }
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _selectedTabIndex == 0
-                ? 'Home'
-                : _selectedTabIndex == 1
-                    ? 'Promotions'
-                    : 'Profile',
+            icon: const Icon(Icons.logout),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                SharedPreferences.getInstance().then((value) => value.clear());
-                Navigator.of(context).pushReplacementNamed(Routes.homeLink);
-              },
-              icon: const Icon(Icons.logout),
-            ),
-          ],
-        ),
-        body: PageView(
-          controller: controller,
-          physics: const NeverScrollableScrollPhysics(),
-          children: [
-            HomeTab(
-              goAuth: goAuth,
-              snackbar: snackbar,
-            ),
-            PromotionsTab(
-              goAuth: goAuth,
-              snackbar: snackbar,
-            ),
-            ProfileTab(
-              goAuth: goAuth,
-              snackbar: snackbar,
-            ),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedTabIndex,
-          selectedItemColor: Colors.white,
-          unselectedItemColor: Colors.grey[500],
-          onTap: changeTab,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.percent),
-              label: 'Promotions',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label: 'Profile',
-            ),
-          ],
-        ),
+        ],
+      ),
+      body: PageView(
+        controller: controller,
+        physics: const NeverScrollableScrollPhysics(),
+        children: [
+          HomeTab(
+            goAuth: goAuth,
+            snackbar: snackbar,
+          ),
+          PromotionsTab(
+            goAuth: goAuth,
+            snackbar: snackbar,
+          ),
+          ProfileTab(
+            goAuth: goAuth,
+            snackbar: snackbar,
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTabIndex,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.grey[500],
+        onTap: changeTab,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.percent),
+            label: 'Promotions',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
       ),
     );
   }

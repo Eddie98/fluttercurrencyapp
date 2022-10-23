@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             scrollBehavior: DisableGlowScrollBehavior(),
-            initialRoute: Routes.homeLink,
+            initialRoute: Routes.authLink,
             onGenerateRoute: Routes.onGenerateRoute,
           ),
         );
